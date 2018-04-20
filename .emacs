@@ -57,6 +57,9 @@
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
+ '(package-selected-packages
+   (quote
+    (doom-themes rjsx-mode protobuf-mode jsx-mode json-mode go-mode dockerfile-mode docker-compose-mode clojure-mode)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(powerline-color1 "#222232")
@@ -121,16 +124,29 @@
 		    (setq-default py-indent-tabs-mode t)
 			(add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
+
+(defun go-test ()
+  (interactive)
+  (shell-command "go test --cover")
+  (current-buffer))
+
 (add-hook 'go-mode-hook
-	    (lambda ()
-		    (setq-default indent-tabs-mode nil)
-		    (setq-default tab-width 4)))
+	  (lambda ()
+	    (add-hook 'before-save-hook 'gofmt-before-save)
+	    (setq-default indent-tabs-mode t)
+	    (setq-default tab-width 4)
+	    (local-set-key (kbd "C-c C-c") 'go-test)))
+
 
 (add-hook 'docker-compose-mode-hook
 	    (lambda ()
 		    (setq-default indent-tabs-mode t)
 		    (setq-default tab-width 4)))
 
+(defun eu-te-amo-emacs ()
+  (interactive)
+  (shell-command "echo 'Eu também te amo, bisca.'")
+  (current-buffer))
 
 (autoload 'web-mode "web-mode")
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
